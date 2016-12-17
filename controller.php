@@ -15,27 +15,28 @@ if (!$link) {
 	die('Error connecting with MySQL server: ' .mysql_error());
 }
 
-$db_selected = mysql_select_db(DB_NAME, $link); 
+$db_selected = mysql_select_db(DB_NAME, $link);
 
 if (!$db_selected) {
 	die('Error connecting with database '. DB_NAME .' :' . mysql_error());
 }
 
-$sql="SELECT * FROM session WHERE NAME='.$username.' and PASSWORD = 'md5(.$password.)' ";
+$sql="SELECT * FROM session WHERE NAME='".$username."' and PASSWORD = '".$password."' ";
 
 $result=mysql_query($sql);
 
-if( $result  > 0 )
+$row = mysql_num_rows($result);
+
+if( $row  == 1 )
 {
-$_SESSION['username'] = $username;
-$_SESSION['password'] = $password;
-header('location:system.html');
+	$_SESSION['username'] = $username;
+	$_SESSION['password'] = $password;
+	header('location:system.html');
 }
 else{
-    unset ($_SESSION['login']);
-    unset ($_SESSION['senha']);
-    header('location:index.php');
-     
+	unset ($_SESSION['login']);
+	unset ($_SESSION['senha']);
+	header('location:index.php');
     }
- 
+
 ?>
